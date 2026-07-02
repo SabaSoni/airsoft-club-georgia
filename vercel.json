@@ -1,5 +1,9 @@
 {
   "version": 2,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index?path=$1" },
+    { "source": "/api", "destination": "/api/index" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

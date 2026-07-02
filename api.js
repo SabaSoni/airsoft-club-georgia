@@ -50,7 +50,7 @@ async function apiRequest(path, options = {}) {
 
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error(data.error || "მოთხოვნა ვერ შესრულდა");
+    throw new Error(data.error || data.message || `მოთხოვნა ვერ შესრულდა (${res.status})`);
   }
   return data;
 }
@@ -190,8 +190,10 @@ window.ACG_API = {
     }
 
     return {
-      message: "დაადასტურეთ ელფოსტა რეგისტრაციის დასასრულებლად",
-      user: null
+      message:
+        "რეგისტრაცია მიღებულია. გთხოვთ გახსნოთ ელფოსტა და დააჭიროთ დადასტურების ბმულს, შემდეგ შედით.",
+      user: null,
+      needsEmailConfirmation: true
     };
   },
 
@@ -204,7 +206,16 @@ window.ACG_API = {
       password: payload.password
     });
 
-    if (error) throw new Error("არასწორი ელფოსტა ან პაროლი");
+    if (error) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes("email not confirmed") || msg.includes("not confirmed")) {
+        throw new Error("ელფოსტა ჯერ არ არის დადასტურებული — შეამოწმეთ ინბოქსი ან სპამი");
+      }
+      if (msg.includes("invalid login") || msg.includes("invalid credentials")) {
+        throw new Error("არასწორი ელფოსტა ან პაროლი");
+      }
+      throw new Error(error.message || "არასწორი ელფოსტა ან პაროლი");
+    }
 
     await maybePromoteAdmin();
     const me = await this.getMe();

@@ -138,7 +138,11 @@
           phone: registerForm.phone.value,
           password: registerForm.password.value
         });
-        showMessage(msg, data.message, "is-success");
+        showMessage(msg, data.message, data.user ? "is-success" : "");
+        if (!data.user) {
+          setLoading(registerForm, false);
+          return;
+        }
         setTimeout(() => {
           const params = new URLSearchParams(window.location.search);
           const next = params.get("next");
