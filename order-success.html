@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>შეკვეთა მიღებულია | Airsoft Club Georgia</title>
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="icon" href="./assets/logo-circle.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="order-success">
+    <div id="pageTransition" class="page-transition" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="index.html" class="site-logo" aria-label="Airsoft Club Georgia მთავარი">
+          <img src="./assets/logo-circle.png" alt="" class="site-logo__circle" />
+        </a>
+        <nav class="site-nav" aria-label="მთავარი ნავიგაცია">
+          <a href="index.html" class="site-nav__link" data-page="index">მთავარი</a>
+          <a href="shop.html" class="site-nav__link" data-page="shop">მაღაზია</a>
+          <a href="operations.html" class="site-nav__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+          <a href="gallery.html" class="site-nav__link" data-page="gallery">გალერეა</a>
+          <a href="contact.html" class="site-nav__link" data-page="contact">კონტაქტი</a>
+          <a href="about.html" class="site-nav__link" data-page="about">ჩვენს შესახებ</a>
+        </nav>
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-primary btn-sm header-auth-btn" id="headerAuthBtn">შესვლა</a>
+          <button id="menuToggle" class="menu-toggle" aria-label="მენიუს გახსნა" aria-expanded="false" aria-controls="mobileMenu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <nav id="mobileMenu" class="mobile-menu" aria-label="მობილური ნავიგაცია">
+      <a href="index.html" class="mobile-menu__link" data-page="index">მთავარი</a>
+      <a href="shop.html" class="mobile-menu__link" data-page="shop">მაღაზია</a>
+      <a href="operations.html" class="mobile-menu__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+      <a href="gallery.html" class="mobile-menu__link" data-page="gallery">გალერეა</a>
+      <a href="contact.html" class="mobile-menu__link" data-page="contact">კონტაქტი</a>
+      <a href="about.html" class="mobile-menu__link" data-page="about">ჩვენს შესახებ</a>
+    </nav>
+
+    <main id="main-content" class="page-with-header">
+      <section class="section">
+        <div class="container" id="orderSuccessRoot"></div>
+      </section>
+    </main>
+
+    <script src="./transitions.js"></script>
+    <script src="./cart-store.js"></script>
+    <script src="./api.js"></script>
+    <script src="./script.js"></script>
+    <script src="./order-success.js"></script>
+  </body>
+</html>

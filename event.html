@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ოპერაცია | Airsoft Club Georgia</title>
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="icon" href="./assets/logo-circle.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="event">
+    <a href="#main-content" class="skip-link">მთავარ კონტენტზე გადასვლა</a>
+    <div id="pageTransition" class="page-transition" aria-hidden="true">
+      <img src="./assets/logo-circle.png" alt="" class="page-transition__logo" />
+    </div>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="index.html" class="site-logo" aria-label="Airsoft Club Georgia მთავარი">
+          <img src="./assets/logo-circle.png" alt="Airsoft Club Georgia მრგვალი ლოგო" class="site-logo__circle" />
+        </a>
+        <nav class="site-nav" aria-label="მთავარი ნავიგაცია">
+          <a href="index.html" class="site-nav__link" data-page="index">მთავარი</a>
+          <a href="shop.html" class="site-nav__link" data-page="shop">მაღაზია</a>
+          <a href="operations.html" class="site-nav__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+          <a href="gallery.html" class="site-nav__link" data-page="gallery">გალერეა</a>
+          <a href="contact.html" class="site-nav__link" data-page="contact">კონტაქტი</a>
+          <a href="about.html" class="site-nav__link" data-page="about">ჩვენს შესახებ</a>
+        </nav>
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-primary btn-sm header-auth-btn" id="headerAuthBtn">შესვლა</a>
+          <button id="menuToggle" class="menu-toggle" aria-label="მენიუს გახსნა" aria-expanded="false" aria-controls="mobileMenu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <nav id="mobileMenu" class="mobile-menu" aria-label="მობილური ნავიგაცია">
+      <a href="index.html" class="mobile-menu__link" data-page="index">მთავარი</a>
+      <a href="shop.html" class="mobile-menu__link" data-page="shop">მაღაზია</a>
+      <a href="operations.html" class="mobile-menu__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+      <a href="gallery.html" class="mobile-menu__link" data-page="gallery">გალერეა</a>
+      <a href="contact.html" class="mobile-menu__link" data-page="contact">კონტაქტი</a>
+      <a href="about.html" class="mobile-menu__link" data-page="about">ჩვენს შესახებ</a>
+    </nav>
+
+    <main id="main-content">
+      <div id="eventRoot" class="event-page">
+        <p class="shop-empty">იტვირთება...</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container site-footer__bottom">
+        <p>© <span id="year"></span> Airsoft Club Georgia</p>
+        <a href="operations.html" class="btn btn-ghost btn-sm">← ყველა ოპერაცია</a>
+      </div>
+    </footer>
+
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="ფოტოს გალერეა">
+      <button id="lightboxClose" class="lightbox__close" aria-label="დახურვა">×</button>
+      <button id="lightboxPrev" class="lightbox__nav lightbox__nav--prev" aria-label="წინა">‹</button>
+      <img id="lightboxImage" src="" alt="" />
+      <button id="lightboxNext" class="lightbox__nav lightbox__nav--next" aria-label="შემდეგი">›</button>
+    </div>
+
+    <dialog id="heroVideoModal" class="video-modal">
+      <div class="video-modal__inner">
+        <button type="button" id="heroVideoClose" class="video-modal__close" aria-label="დახურვა">×</button>
+        <video id="heroModalVideo" controls playsinline></video>
+      </div>
+    </dialog>
+
+    <script src="./transitions.js"></script>
+    <script src="./cart-store.js"></script>
+    <script src="./api.js"></script>
+    <script src="./events-api.js"></script>
+    <script src="./cart.js"></script>
+    <script src="./script.js"></script>
+    <script src="./video-modal.js"></script>
+    <script src="./attendance-ui.js"></script>
+    <script src="./index.js"></script>
+    <script src="./event.js"></script>
+  </body>
+</html>

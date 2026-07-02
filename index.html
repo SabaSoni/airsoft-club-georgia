@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Airsoft Club Georgia | აირსოფტი საქართველოში</title>
+    <meta
+      name="description"
+      content="Airsoft Club Georgia - აირსოფტის კლუბი თბილისში. თამაში, მაღაზია, სერვისი, ოპერაციები და ღონისძიებები, მათ შორის ბირთვული ზამთარი."
+    />
+    <meta
+      name="keywords"
+      content="აირსოფტი თბილისი, airsoft საქართველო, ბირთვული ზამთარი, აირსოფტის მაღაზია, airsoft club georgia"
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="./assets/logo-circle.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="index">
+    <a href="#main-content" class="skip-link">მთავარ კონტენტზე გადასვლა</a>
+
+    <div id="pageTransition" class="page-transition" aria-hidden="true">
+      <img src="./assets/logo-circle.png" alt="" class="page-transition__logo" />
+    </div>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="index.html" class="site-logo" aria-label="Airsoft Club Georgia მთავარი">
+          <img src="./assets/logo-circle.png" alt="Airsoft Club Georgia მრგვალი ლოგო" class="site-logo__circle" />
+        </a>
+
+                <nav class="site-nav" aria-label="მთავარი ნავიგაცია">
+          <a href="index.html" class="site-nav__link" data-page="index">მთავარი</a>
+          <a href="shop.html" class="site-nav__link" data-page="shop">მაღაზია</a>
+          <a href="operations.html" class="site-nav__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+          <a href="gallery.html" class="site-nav__link" data-page="gallery">გალერეა</a>
+          <a href="contact.html" class="site-nav__link" data-page="contact">კონტაქტი</a>
+          <a href="about.html" class="site-nav__link" data-page="about">ჩვენს შესახებ</a>
+        </nav>
+
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-primary btn-sm header-auth-btn" id="headerAuthBtn">შესვლა</a>
+          <button id="menuToggle" class="menu-toggle" aria-label="მენიუს გახსნა" aria-expanded="false" aria-controls="mobileMenu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+        <nav id="mobileMenu" class="mobile-menu" aria-label="მობილური ნავიგაცია">
+      <a href="index.html" class="mobile-menu__link" data-page="index">მთავარი</a>
+      <a href="shop.html" class="mobile-menu__link" data-page="shop">მაღაზია</a>
+      <a href="operations.html" class="mobile-menu__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+      <a href="gallery.html" class="mobile-menu__link" data-page="gallery">გალერეა</a>
+      <a href="contact.html" class="mobile-menu__link" data-page="contact">კონტაქტი</a>
+      <a href="about.html" class="mobile-menu__link" data-page="about">ჩვენს შესახებ</a>
+    </nav>
+
+    <main id="main-content">
+      <section class="hero hero--v2 hero--cinematic">
+        <div class="hero__media" aria-hidden="true">
+          <video
+            class="hero__video"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster="./assets/nuclear-winter-poster.jpg"
+          >
+            <source src="./assets/hero-video.mp4" type="video/mp4" />
+          </video>
+          <div class="hero__scrim"></div>
+        </div>
+
+        <div class="hero__body container">
+          <div class="hero__main">
+            <div class="hero__eyebrow">
+              <img src="./assets/logo-circle.png" alt="" class="hero__logo-sm" width="44" height="44" />
+              <span>Airsoft Club Georgia</span>
+            </div>
+            <h1 class="hero__title">
+              <span class="hero__title-line">ტაქტიკა.</span>
+              <span class="hero__title-line">გუნდი.</span>
+              <span class="hero__title-line hero__title-line--accent">საქართველო.</span>
+            </h1>
+            <p class="hero__lead">
+              ველი, მაღაზია და ფედერაციის ოპერაციები — ერთი კომუნიტეტი, ერთი წესი, ერთი პასიონი.
+            </p>
+            <ul class="hero__pills">
+              <li>ოპერაციები</li>
+              <li>მაღაზია</li>
+              <li>სერვისი</li>
+              <li>გაქირავება</li>
+            </ul>
+            <div class="hero__actions">
+              <a href="operations.html" class="btn btn-primary">შემოგვიერთდი</a>
+              <a href="videos.html" class="btn btn-outline hero__play" id="heroPlayBtn">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                ვიდეოს ნახვა
+              </a>
+              <a href="shop.html" class="btn btn-ghost">მაღაზია</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="eventCountdown" class="countdown-banner" hidden>
+        <div class="countdown-banner__accent" aria-hidden="true"></div>
+        <div class="container">
+          <div class="countdown-banner__inner reveal-up">
+            <div class="countdown-banner__poster-wrap" id="countdownPosterWrap" hidden>
+              <img id="countdownPoster" src="" alt="" class="countdown-banner__poster" />
+            </div>
+            <div class="countdown-banner__info">
+              <span class="countdown-banner__eyebrow">შემდეგი ოპერაცია</span>
+              <h2 id="countdownTitle" class="countdown-banner__title">—</h2>
+              <p id="countdownMeta" class="countdown-banner__meta"></p>
+              <a id="countdownLink" href="operations.html" class="btn btn-primary btn-sm">დეტალები →</a>
+            </div>
+            <div id="countdownTarget" class="countdown-pro"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section home-services">
+        <div class="container">
+          <div class="home-services__panel reveal-up">
+            <div class="home-services__visual">
+              <img
+                src="./assets/team-group.jpg"
+                alt="Airsoft Club Georgia — გუნდი ველზე"
+                loading="lazy"
+              />
+              <div class="home-services__visual-overlay"></div>
+              <span class="home-services__badge">ACG × ფედერაცია</span>
+            </div>
+
+            <div class="home-services__content">
+              <span class="section-label">კლუბი &amp; ფედერაცია</span>
+              <h2 class="section-title">ტაქტიკური საზოგადოება საქართველოში</h2>
+              <p class="section-desc">
+                Airsoft Club Georgia ერთვება საქართველოს აირსოფტის ფედერაციას — ოფიციალური ოპერაციები, ტურნირები და უსაფრთხოების სტანდარტები ერთიანი წესებით.
+              </p>
+
+              <div class="home-services__cards">
+                <a href="shop.html" class="service-tile service-tile--link">
+                  <div class="service-tile__head">
+                    <span class="service-tile__icon" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+                    </span>
+                    <h3>მაღაზია</h3>
+                  </div>
+                  <p>რეალისტური რეპლიკები, აქსესუარები და ნაწილები ვაჟა-ფშაველას 78ა-ზე.</p>
+                  <span class="service-tile__cta">კატალოგი →</span>
+                </a>
+                <a href="contact.html" class="service-tile service-tile--link">
+                  <div class="service-tile__head">
+                    <span class="service-tile__icon" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                    </span>
+                    <h3>სერვისი</h3>
+                  </div>
+                  <p>ტექნიკური მომსახურება, გაუმჯობესება და კონსულტაცია აღჭურვილობაზე.</p>
+                  <span class="service-tile__cta">დაგვიკავშირდი →</span>
+                </a>
+                <a href="operations.html" class="service-tile service-tile--link">
+                  <div class="service-tile__head">
+                    <span class="service-tile__icon" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </span>
+                    <h3>ოპერაციები</h3>
+                  </div>
+                  <p>ბირთვული ზამთარი, ტაქტიკური დღეები და CQB ღონისძიებები მთელი წლის განმავლობაში.</p>
+                  <span class="service-tile__cta">კალენდარი →</span>
+                </a>
+              </div>
+
+              <a
+                href="https://www.facebook.com/airsoft.georgia.federation"
+                target="_blank"
+                rel="noreferrer"
+                class="btn btn-primary home-services__fb"
+              >ფედერაცია Facebook-ზე</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--surface">
+        <div class="container">
+          <div class="section-header section-header--split reveal-up">
+            <div>
+              <span class="section-label">ოპერაციები / ღონისძიებები</span>
+              <h2 class="section-title">ფედერაციის ღონისძიებები</h2>
+            </div>
+            <a href="operations.html" class="btn btn-outline">ყველა ოპერაცია</a>
+          </div>
+          <div id="operationsTeaser" class="ops-teaser"></div>
+        </div>
+      </section>
+
+      <section class="section section--dark">
+        <div class="container">
+          <div class="section-header reveal-up">
+            <span class="section-label">მაღაზია</span>
+            <h2 class="section-title">რჩეული აირსოფტი</h2>
+            <p class="section-desc">პროფესიონალური რეპლიკები — ხელმისაწვდომი ფასებით თბილისში.</p>
+          </div>
+          <div id="productsGrid" class="products-grid" data-teaser="true"></div>
+          <div class="section-cta reveal-up">
+            <a href="shop.html" class="btn btn-primary">სრული მაღაზია</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section home-visit">
+        <div class="container">
+          <div class="home-visit__grid">
+            <div class="home-visit__card reveal-up">
+              <span class="section-label">მაღაზია &amp; კლუბი</span>
+              <h2 class="home-visit__title">ეწვიე ჩვენს ლოკაციას</h2>
+              <p class="home-visit__text">თბილისი, ვაჟა-ფშაველას გამზირი 78ა — ორშ–შაბ 11:00–20:00</p>
+              <div class="home-visit__actions">
+                <a href="tel:+995596206090" class="btn btn-primary">+995 596 20 60 90</a>
+                <a href="contact.html" class="btn btn-outline">მიმართულება</a>
+              </div>
+            </div>
+            <div class="home-visit__map reveal-up" aria-hidden="true">
+              <div class="home-visit__map-inner">
+                <span>ვაჟა-ფშაველა 78ა</span>
+                <p>თბილისი, საქართველო</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__grid">
+          <div class="site-footer__brand">
+            <img src="./assets/logo-circle.png" alt="Airsoft Club Georgia ლოგო" />
+            <p class="site-footer__tagline">თამაში, მაღაზია, სერვისი — აირსოფტი საქართველოში.</p>
+            <div class="site-footer__social">
+              <a href="https://www.facebook.com/airsoftclub.ge" target="_blank" rel="noreferrer" aria-label="Facebook">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+              <a href="https://www.facebook.com/airsoft.georgia.federation" target="_blank" rel="noreferrer" aria-label="ფედერაცია Facebook">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="site-footer__heading">ბმულები</h3>
+            <ul class="site-footer__links">
+              <li><a href="index.html">მთავარი</a></li>
+              <li><a href="shop.html">მაღაზია</a></li>
+              <li><a href="operations.html">ოპერაციები</a></li>
+              <li><a href="gallery.html">გალერეა</a></li>
+              <li><a href="contact.html">კონტაქტი</a></li>
+              <li><a href="about.html">ჩვენს შესახებ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="site-footer__heading">კონტაქტი</h3>
+            <ul class="site-footer__contact">
+              <li><a href="tel:+995596206090">+995 596 20 60 90</a></li>
+              <li>თბილისი, ვაჟა-ფშაველას გამზირი 78ა</li>
+              <li>ორშ–შაბ: 11:00 – 20:00</li>
+            </ul>
+          </div>
+        </div>
+        <div class="site-footer__bottom">
+          <p>© <span id="year"></span> Airsoft Club Georgia — ყველა უფლება დაცულია.</p>
+          <a href="#" class="back-to-top-footer">↑ ზემოთ</a>
+        </div>
+      </div>
+    </footer>
+
+    <button id="backToTop" class="back-to-top" aria-label="ზემოთ დაბრუნება">↑</button>
+
+    <dialog id="heroVideoModal" class="video-modal">
+      <div class="video-modal__inner">
+        <button type="button" id="heroVideoClose" class="video-modal__close" aria-label="დახურვა">×</button>
+        <video id="heroModalVideo" controls playsinline poster="./assets/nuclear-winter-poster.jpg">
+          <source src="./assets/hero-video.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </dialog>
+
+    <dialog id="productModal" class="product-modal">
+      <h3 id="modalTitle"></h3>
+      <img id="modalImage" src="" alt="პროდუქტის ფოტო" class="product-modal__image" />
+      <p id="modalDescription"></p>
+      <p id="modalPrice" class="product-modal__price"></p>
+      <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1rem">
+        <button id="modalClose" class="btn btn-outline btn-sm">დახურვა</button>
+        <button id="modalAddToCart" class="btn btn-primary btn-sm" type="button">კალათაში</button>
+      </div>
+    </dialog>
+
+    <script src="./transitions.js"></script>
+    <script src="./cart-store.js"></script>
+    <script src="./api.js"></script>
+    <script src="./products-fallback.js"></script>
+    <script src="./events-api.js"></script>
+    <script src="./cart.js"></script>
+    <script src="./script.js"></script>
+    <script src="./video-modal.js"></script>
+    <script src="./attendance-ui.js"></script>
+    <script src="./index.js"></script>
+    <script src="./operations.js"></script>
+    <script src="./shop.js"></script>
+  </body>
+</html>

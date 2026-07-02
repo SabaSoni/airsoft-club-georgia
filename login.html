@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>შესვლა | Airsoft Club Georgia</title>
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="./assets/logo-circle.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="auth-layout" data-page="login">
+    <a href="#main-content" class="skip-link">მთავარ კონტენტზე გადასვლა</a>
+
+    <div id="pageTransition" class="page-transition" aria-hidden="true">
+      <img src="./assets/logo-circle.png" alt="" class="page-transition__logo" />
+    </div>
+
+    <div class="auth-shell">
+      <aside class="auth-showcase">
+        <div class="auth-showcase__bg" aria-hidden="true">
+          <video
+            class="auth-showcase__video"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster="./assets/nuclear-winter-poster.jpg"
+          >
+            <source src="./assets/FDownloader.net-1013343016867147-(1080p).mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="auth-showcase__scrim" aria-hidden="true"></div>
+        <div class="auth-showcase__content">
+          <img src="./assets/logo-circle.png" alt="" class="auth-showcase__logo" width="72" height="72" />
+          <p class="auth-showcase__brand">Airsoft Club Georgia</p>
+          <h1 class="auth-showcase__title">შედით თქვენს ანგარიშში</h1>
+          <p class="auth-showcase__text">
+            ონლაინ შეკვეთები, კალათა და სწრაფი checkout — ერთი ანგარიშით.
+          </p>
+          <ul class="auth-showcase__perks">
+            <li>
+              <span class="auth-showcase__perk-icon" aria-hidden="true">✓</span>
+              მაღაზიიდან პირდაპირი შეკვეთა
+            </li>
+            <li>
+              <span class="auth-showcase__perk-icon" aria-hidden="true">✓</span>
+              შეკვეთების ისტორია
+            </li>
+            <li>
+              <span class="auth-showcase__perk-icon" aria-hidden="true">✓</span>
+              უსაფრთხო და სწრაფი რეგისტრაცია
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="auth-panel-wrap">
+        <header class="auth-topbar">
+          <a href="index.html" class="auth-topbar__logo" aria-label="მთავარი გვერდი">
+            <img src="./assets/logo-circle.png" alt="" width="36" height="36" />
+            <span>ACG</span>
+          </a>
+          <a href="index.html" class="auth-topbar__back">← მთავარი</a>
+        </header>
+
+        <main id="main-content" class="auth-panel">
+          <div class="auth-panel__card reveal-up">
+            <div class="auth-panel__head">
+              <h2 class="auth-panel__title">ანგარიში</h2>
+              <p class="auth-panel__sub">შესვლა ან რეგისტრაცია</p>
+            </div>
+
+            <p id="registerHint" class="auth-hint" hidden></p>
+
+            <div class="auth-tabs" role="tablist" aria-label="ანგარიშის ტიპი">
+              <button
+                type="button"
+                class="auth-tabs__btn is-active"
+                data-tab="login"
+                role="tab"
+                aria-selected="true"
+                aria-controls="loginForm"
+              >
+                შესვლა
+              </button>
+              <button
+                type="button"
+                class="auth-tabs__btn"
+                data-tab="register"
+                role="tab"
+                aria-selected="false"
+                aria-controls="registerForm"
+              >
+                რეგისტრაცია
+              </button>
+              <span class="auth-tabs__indicator" aria-hidden="true"></span>
+            </div>
+
+            <form id="loginForm" class="auth-form" data-panel="login" aria-labelledby="login-tab">
+              <div class="auth-field">
+                <label for="loginEmail">ელფოსტა</label>
+                <div class="auth-input-wrap">
+                  <svg class="auth-input__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M4 4h16v16H4z" opacity="0"/><path d="M4 8l8 5 8-5"/><rect x="4" y="4" width="16" height="16" rx="2"/>
+                  </svg>
+                  <input
+                    id="loginEmail"
+                    type="email"
+                    name="email"
+                    required
+                    autocomplete="email"
+                    placeholder="name@example.com"
+                  />
+                </div>
+              </div>
+
+              <div class="auth-field">
+                <label for="loginPassword">პაროლი</label>
+                <div class="auth-input-wrap">
+                  <svg class="auth-input__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>
+                  </svg>
+                  <input
+                    id="loginPassword"
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                    minlength="8"
+                    placeholder="••••••••"
+                  />
+                  <button type="button" class="auth-input__toggle" data-toggle-password="loginPassword" aria-label="პაროლის ჩვენება">
+                    <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" hidden><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-10-8-10-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 10 8 10 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <p id="loginMessage" class="auth-message" role="status"></p>
+
+              <button type="submit" class="btn btn-primary auth-submit">
+                <span class="auth-submit__text">შესვლა</span>
+                <span class="auth-submit__loader" aria-hidden="true"></span>
+              </button>
+            </form>
+
+            <form id="registerForm" class="auth-form is-hidden" data-panel="register" hidden aria-labelledby="register-tab">
+              <div class="auth-form__row">
+                <div class="auth-field">
+                  <label for="registerName">სახელი</label>
+                  <div class="auth-input-wrap">
+                    <svg class="auth-input__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+                    </svg>
+                    <input id="registerName" type="text" name="name" required autocomplete="name" placeholder="თქვენი სახელი" />
+                  </div>
+                </div>
+                <div class="auth-field">
+                  <label for="registerPhone">ტელეფონი</label>
+                  <div class="auth-input-wrap">
+                    <svg class="auth-input__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                    </svg>
+                    <input id="registerPhone" type="tel" name="phone" autocomplete="tel" placeholder="+995 5XX XX XX XX" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="auth-field">
+                <label for="registerEmail">ელფოსტა</label>
+                <div class="auth-input-wrap">
+                  <svg class="auth-input__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 8l8 5 8-5"/>
+                  </svg>
+                  <input id="registerEmail" type="email" name="email" required autocomplete="email" placeholder="name@example.com" />
+                </div>
+              </div>
+
+              <div class="auth-field">
+                <label for="registerPassword">პაროლი <small>(მინ. 6 სიმბოლო)</small></label>
+                <div class="auth-input-wrap">
+                  <svg class="auth-input__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>
+                  </svg>
+                  <input
+                    id="registerPassword"
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="new-password"
+                    minlength="8"
+                    placeholder="••••••••"
+                  />
+                  <button type="button" class="auth-input__toggle" data-toggle-password="registerPassword" aria-label="პაროლის ჩვენება">
+                    <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" hidden><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-10-8-10-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 10 8 10 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <p id="registerMessage" class="auth-message" role="status"></p>
+
+              <button type="submit" class="btn btn-primary auth-submit">
+                <span class="auth-submit__text">ანგარიშის შექმნა</span>
+                <span class="auth-submit__loader" aria-hidden="true"></span>
+              </button>
+            </form>
+
+            <p class="auth-panel__footer">
+              ანგარიშის გარეშე გინდათ შეძენა?
+              <a href="shop.html">მაღაზია</a>
+            </p>
+          </div>
+
+          <p class="auth-copyright">© <span id="year"></span> Airsoft Club Georgia</p>
+        </main>
+      </div>
+    </div>
+
+    <script src="./transitions.js"></script>
+    <script src="./cart-store.js"></script>
+    <script src="./api.js"></script>
+    <script src="./script.js"></script>
+    <script src="./auth.js"></script>
+  </body>
+</html>

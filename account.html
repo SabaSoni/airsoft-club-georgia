@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ჩემი ანგარიში | Airsoft Club Georgia</title>
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="icon" href="./assets/logo-circle.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="account">
+    <a href="#main-content" class="skip-link">მთავარ კონტენტზე გადასვლა</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="index.html" class="site-logo" aria-label="Airsoft Club Georgia მთავარი">
+          <img src="./assets/logo-circle.png" alt="" class="site-logo__circle" />
+        </a>
+        <nav class="site-nav" aria-label="მთავარი ნავიგაცია">
+          <a href="index.html" class="site-nav__link" data-page="index">მთავარი</a>
+          <a href="shop.html" class="site-nav__link" data-page="shop">მაღაზია</a>
+          <a href="operations.html" class="site-nav__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+          <a href="gallery.html" class="site-nav__link" data-page="gallery">გალერეა</a>
+          <a href="contact.html" class="site-nav__link" data-page="contact">კონტაქტი</a>
+          <a href="about.html" class="site-nav__link" data-page="about">ჩვენს შესახებ</a>
+        </nav>
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-primary btn-sm header-auth-btn" id="headerAuthBtn">შესვლა</a>
+          <button id="menuToggle" class="menu-toggle" aria-label="მენიუს გახსნა" aria-expanded="false" aria-controls="mobileMenu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <nav id="mobileMenu" class="mobile-menu" aria-label="მობილური ნავიგაცია">
+      <a href="index.html" class="mobile-menu__link" data-page="index">მთავარი</a>
+      <a href="shop.html" class="mobile-menu__link" data-page="shop">მაღაზია</a>
+      <a href="operations.html" class="mobile-menu__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+      <a href="gallery.html" class="mobile-menu__link" data-page="gallery">გალერეა</a>
+      <a href="contact.html" class="mobile-menu__link" data-page="contact">კონტაქტი</a>
+      <a href="about.html" class="mobile-menu__link" data-page="about">ჩვენს შესახებ</a>
+    </nav>
+
+    <main id="main-content" class="account-page">
+      <div class="container">
+        <div id="accountGate" class="account-gate">
+          <div class="account-gate__card reveal-up">
+            <img src="./assets/logo-circle.png" alt="" class="account-gate__logo" />
+            <h1>ჩემი ანგარიში</h1>
+            <p id="accountGateMsg">შედით ანგარიშში შეკვეთებისა და ოპერაციების სანახავად.</p>
+            <a href="login.html?next=account.html" class="btn btn-primary">შესვლა / რეგისტრაცია</a>
+          </div>
+        </div>
+
+        <div id="accountApp" class="account-shell" hidden>
+          <section class="account-profile reveal-up">
+            <div class="account-profile__main">
+              <div class="account-profile__avatar" id="accountAvatar" aria-hidden="true">—</div>
+              <div>
+                <span class="section-label">პროფილი</span>
+                <h1 class="account-profile__name" id="accountName">—</h1>
+                <p class="account-profile__email" id="accountEmail">—</p>
+                <p class="account-profile__phone" id="accountPhone" hidden></p>
+              </div>
+            </div>
+            <div class="account-profile__actions">
+              <a href="operations.html" class="btn btn-primary btn-sm">ოპერაციები</a>
+              <a href="shop.html" class="btn btn-outline btn-sm">მაღაზია</a>
+              <button type="button" id="accountLogout" class="btn btn-ghost btn-sm">გამოსვლა</button>
+            </div>
+          </section>
+
+          <div class="account-stats reveal-up">
+            <article class="account-stat">
+              <span class="account-stat__value" id="statOrders">0</span>
+              <span class="account-stat__label">შეკვეთა</span>
+            </article>
+            <article class="account-stat">
+              <span class="account-stat__value" id="statUpcoming">0</span>
+              <span class="account-stat__label">მომავალი ოპერაცია</span>
+            </article>
+            <article class="account-stat">
+              <span class="account-stat__value" id="statAttended">0</span>
+              <span class="account-stat__label">დასწრებული</span>
+            </article>
+          </div>
+
+          <div class="account-layout">
+            <aside class="account-sidebar reveal-up">
+              <section class="account-card account-card--settings">
+                <h2>უსაფრთხოება</h2>
+                <p class="account-card__sub">პაროლის შეცვლა მიმდინარე პაროლით ან ელფოსტის კოდით</p>
+
+                <div class="account-pw-tabs" role="tablist" aria-label="პაროლის შეცვლის მეთოდი">
+                  <button type="button" class="account-pw-tabs__btn is-active" data-pw-tab="current" role="tab" aria-selected="true">
+                    მიმდინარე პაროლი
+                  </button>
+                  <button type="button" class="account-pw-tabs__btn" data-pw-tab="email" role="tab" aria-selected="false">
+                    ელფოსტის კოდი
+                  </button>
+                </div>
+
+                <form id="passwordFormCurrent" class="account-pw-panel is-active" data-pw-panel="current">
+                  <label class="form-field">
+                    <span>მიმდინარე პაროლი</span>
+                    <input type="password" name="currentPassword" autocomplete="current-password" required />
+                  </label>
+                  <label class="form-field">
+                    <span>ახალი პაროლი</span>
+                    <input type="password" name="newPassword" autocomplete="new-password" minlength="8" required />
+                  </label>
+                  <label class="form-field">
+                    <span>გაიმეორეთ ახალი პაროლი</span>
+                    <input type="password" name="confirmPassword" autocomplete="new-password" minlength="8" required />
+                  </label>
+                  <button type="submit" class="btn btn-primary btn-sm">პაროლის შეცვლა</button>
+                </form>
+
+                <form id="passwordFormEmail" class="account-pw-panel" data-pw-panel="email" hidden>
+                  <p class="account-pw-hint">კოდი გამოიგზავნება თქვენს ელფოსტაზე (10 წუთის ვადა).</p>
+                  <button type="button" id="sendCodeBtn" class="btn btn-outline btn-sm">კოდის მიღება</button>
+                  <p id="sendCodeMsg" class="form-msg" aria-live="polite"></p>
+                  <label class="form-field">
+                    <span>ელფოსტის კოდი</span>
+                    <input type="text" name="code" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="123456" />
+                  </label>
+                  <label class="form-field">
+                    <span>ახალი პაროლი</span>
+                    <input type="password" name="newPassword" autocomplete="new-password" minlength="8" required />
+                  </label>
+                  <label class="form-field">
+                    <span>გაიმეორეთ ახალი პაროლი</span>
+                    <input type="password" name="confirmPassword" autocomplete="new-password" minlength="8" required />
+                  </label>
+                  <button type="submit" class="btn btn-primary btn-sm">პაროლის შეცვლა კოდით</button>
+                </form>
+
+                <p id="passwordFormMsg" class="form-msg" aria-live="polite"></p>
+              </section>
+            </aside>
+
+            <div class="account-main">
+              <section class="account-card reveal-up">
+                <div class="account-card__head">
+                  <h2>ჩემი შეკვეთები</h2>
+                </div>
+                <div id="accountOrders" class="account-list"></div>
+              </section>
+
+              <section class="account-card reveal-up">
+                <div class="account-card__head">
+                  <h2>მომავალი ოპერაციები</h2>
+                  <p class="account-card__sub">სადაც „მივდივარ“ დააჭირეთ</p>
+                </div>
+                <div id="accountUpcoming" class="account-list"></div>
+              </section>
+
+              <section class="account-card reveal-up">
+                <div class="account-card__head">
+                  <h2>დასწრებული ოპერაციები</h2>
+                </div>
+                <div id="accountAttended" class="account-list"></div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__bottom">
+          <p>© <span id="year"></span> Airsoft Club Georgia</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./cart-store.js"></script>
+    <script src="./api.js"></script>
+    <script src="./script.js"></script>
+    <script src="./account.js"></script>
+  </body>
+</html>

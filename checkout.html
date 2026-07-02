@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>შეკვეთის გაფორმება | Airsoft Club Georgia</title>
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="icon" href="./assets/logo-circle.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="checkout">
+    <a href="#main-content" class="skip-link">მთავარ კონტენტზე გადასვლა</a>
+    <div id="pageTransition" class="page-transition" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="index.html" class="site-logo" aria-label="Airsoft Club Georgia მთავარი">
+          <img src="./assets/logo-circle.png" alt="" class="site-logo__circle" />
+</a>
+                <nav class="site-nav" aria-label="მთავარი ნავიგაცია">
+          <a href="index.html" class="site-nav__link" data-page="index">მთავარი</a>
+          <a href="shop.html" class="site-nav__link" data-page="shop">მაღაზია</a>
+          <a href="operations.html" class="site-nav__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+          <a href="gallery.html" class="site-nav__link" data-page="gallery">გალერეა</a>
+          <a href="contact.html" class="site-nav__link" data-page="contact">კონტაქტი</a>
+          <a href="about.html" class="site-nav__link" data-page="about">ჩვენს შესახებ</a>
+        </nav>
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-primary btn-sm header-auth-btn" id="headerAuthBtn">შესვლა</a>
+          <button id="menuToggle" class="menu-toggle" aria-label="მენიუს გახსნა" aria-expanded="false" aria-controls="mobileMenu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+        <nav id="mobileMenu" class="mobile-menu" aria-label="მობილური ნავიგაცია">
+      <a href="index.html" class="mobile-menu__link" data-page="index">მთავარი</a>
+      <a href="shop.html" class="mobile-menu__link" data-page="shop">მაღაზია</a>
+      <a href="operations.html" class="mobile-menu__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+      <a href="gallery.html" class="mobile-menu__link" data-page="gallery">გალერეა</a>
+      <a href="contact.html" class="mobile-menu__link" data-page="contact">კონტაქტი</a>
+      <a href="about.html" class="mobile-menu__link" data-page="about">ჩვენს შესახებ</a>
+    </nav>
+
+    <main id="main-content" class="page-with-header">
+      <section class="section">
+        <div class="container checkout-layout">
+          <div class="checkout-form-wrap">
+            <div class="section-header">
+              <span class="section-label">შეკვეთა</span>
+              <h1 class="section-title">გაფორმება</h1>
+            </div>
+            <form id="checkoutForm" class="checkout-form card">
+              <div class="form-group">
+                <label for="customerName">სახელი და გვარი *</label>
+                <input required id="customerName" name="customerName" class="form-input" type="text" />
+              </div>
+              <div class="form-group">
+                <label for="phone">ტელეფონი *</label>
+                <input required id="phone" name="phone" class="form-input" type="tel" placeholder="+995..." />
+              </div>
+              <div class="form-group">
+                <label for="email">ელფოსტა</label>
+                <input id="email" name="email" class="form-input" type="email" />
+              </div>
+              <div class="form-group">
+                <label for="address">მიწოდების მისამართი *</label>
+                <textarea required id="address" name="address" class="form-input" placeholder="ქალაქი, ქუჩა, სახლი..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="paymentMethod">გადახდის მეთოდი *</label>
+                <select required id="paymentMethod" name="paymentMethod" class="form-input">
+                  <option value="">აირჩიეთ...</option>
+                  <option value="cash">კატეზე გადახდა (მაღაზიაში ან მიწოდებისას)</option>
+                  <option value="bank">ბანკის გადარიცხვა</option>
+                  <option value="card">ბარათით მიწოდებისას</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="notes">კომენტარი</label>
+                <textarea id="notes" name="notes" class="form-input" placeholder="დამატებითი ინფორმაცია..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">შეკვეთის დადასტურება</button>
+              <p id="checkoutMessage" class="form-message" aria-live="polite"></p>
+            </form>
+          </div>
+          <aside id="checkoutSummary" class="checkout-summary card"></aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__bottom">
+          <p>© <span id="year"></span> Airsoft Club Georgia — ყველა უფლება დაცულია.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./transitions.js"></script>
+    <script src="./cart-store.js"></script>
+    <script src="./api.js"></script>
+    <script src="./cart.js"></script>
+    <script src="./script.js"></script>
+    <script src="./checkout.js"></script>
+  </body>
+</html>

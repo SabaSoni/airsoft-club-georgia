@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ადმინ პანელი | Airsoft Club Georgia</title>
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="icon" href="./assets/logo-circle.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="admin">
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="index.html" class="site-logo">
+          <img src="./assets/logo-circle.png" alt="" class="site-logo__circle" />
+        </a>
+        <div class="header-actions">
+          <a href="account.html" class="btn btn-ghost btn-sm">ჩემი ანგარიში</a>
+          <a href="index.html" class="btn btn-ghost btn-sm">საიტზე დაბრუნება</a>
+          <button type="button" id="adminLogout" class="btn btn-outline btn-sm">გამოსვლა</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-page" id="main-content">
+      <div class="container">
+        <div id="adminGate" class="admin-gate">
+          <h1>ადმინ პანელი</h1>
+          <p>მხოლოდ ადმინისტრატორის Gmail-ით შეგიძლიათ ოპერაციებისა და ვიდეოების მართვა.</p>
+          <a href="login.html" class="btn btn-primary">შესვლა</a>
+        </div>
+
+        <div id="adminApp" class="admin-app" hidden>
+          <div class="admin-header">
+            <div>
+              <h1>ადმინისტრატორის პანელი</h1>
+              <p class="admin-header__sub">ოპერაციები, ვიდეოები და პარამეტრები</p>
+            </div>
+          </div>
+
+          <div class="admin-shell">
+            <nav class="admin-nav" aria-label="ადმინ მენიუ">
+              <button type="button" class="admin-nav__btn is-active" data-admin-tab="operations">ოპერაციები</button>
+              <button type="button" class="admin-nav__btn" data-admin-tab="media">მედია &amp; ვიდეო</button>
+              <button type="button" class="admin-nav__btn" data-admin-tab="settings">პარამეტრები</button>
+            </nav>
+
+            <div class="admin-panels">
+              <!-- Operations -->
+              <section id="adminTabOperations" class="admin-panel is-active" data-panel="operations">
+                <div class="admin-panel__head">
+                  <h2>ოპერაციების მართვა</h2>
+                  <button type="button" id="newEventBtn" class="btn btn-primary btn-sm">+ ახალი ოპერაცია</button>
+                </div>
+                <div class="admin-layout">
+                  <aside class="admin-sidebar">
+                    <h3>სია</h3>
+                    <ul id="adminEventList" class="admin-event-list"></ul>
+                  </aside>
+                  <div class="admin-main">
+                    <div id="adminEmpty" class="admin-empty">
+                      <p>აირჩიეთ ოპერაცია ან შექმენით ახალი.</p>
+                    </div>
+                    <form id="eventForm" class="admin-form" hidden>
+                      <input type="hidden" name="id" />
+                      <div class="admin-form__grid">
+                        <label class="form-field">
+                          <span>Slug (URL)</span>
+                          <input name="slug" required placeholder="nuclear-winter-2026" />
+                        </label>
+                        <label class="form-field">
+                          <span>სათაური</span>
+                          <input name="title" required />
+                        </label>
+                        <label class="form-field form-field--full">
+                          <span>აღწერა</span>
+                          <textarea name="description" rows="3"></textarea>
+                        </label>
+                        <label class="form-field">
+                          <span>ლოკაცია</span>
+                          <input name="location" />
+                        </label>
+                        <label class="form-field">
+                          <span>სტატუსი (ტექსტი)</span>
+                          <input name="status" placeholder="რეგისტრაცია გახსნილია" />
+                        </label>
+                        <label class="form-field">
+                          <span>სტატუსის ტიპი</span>
+                          <select name="statusType">
+                            <option value="open">open</option>
+                            <option value="limited">limited</option>
+                            <option value="soon">soon</option>
+                            <option value="past">past</option>
+                          </select>
+                        </label>
+                        <label class="form-field">
+                          <span>დაწყება</span>
+                          <input type="datetime-local" name="startsAt" required />
+                        </label>
+                        <label class="form-field">
+                          <span>დასრულება</span>
+                          <input type="datetime-local" name="endsAt" />
+                        </label>
+                        <label class="form-field">
+                          <span>პოსტერი URL</span>
+                          <input name="posterUrl" placeholder="./assets/..." />
+                        </label>
+                        <label class="form-field">
+                          <span>პრომო ვიდეო URL</span>
+                          <input name="videoUrl" placeholder="./assets/hero-video.mp4" />
+                        </label>
+                        <label class="form-field form-field--full">
+                          <span>ფედერაციის ბმული</span>
+                          <input name="federationLink" />
+                        </label>
+                        <label class="form-field">
+                          <span>რიგი</span>
+                          <input type="number" name="sortOrder" value="0" />
+                        </label>
+                        <label class="form-field form-field--checkbox">
+                          <input type="checkbox" name="featured" />
+                          <span>რჩეული (countdown)</span>
+                        </label>
+                        <label class="form-field form-field--checkbox">
+                          <input type="checkbox" name="published" checked />
+                          <span>გამოქვეყნებული</span>
+                        </label>
+                      </div>
+                      <div class="admin-form__actions">
+                        <button type="submit" class="btn btn-primary">შენახვა</button>
+                        <button type="button" id="applyRecurringBtn" class="btn btn-outline" hidden>ყველა კვირეულზე</button>
+                        <button type="button" id="deleteEventBtn" class="btn btn-outline">წაშლა</button>
+                        <button type="button" id="goToMediaBtn" class="btn btn-ghost btn-sm" hidden>მედიის ატვირთვა →</button>
+                      </div>
+                      <p id="recurringNote" class="admin-recurring-note" hidden>კვირეული ოპერაცია — „ყველა კვირეულზე“ განაახლებს ყველა კვირის თარიღს. კონკრეტული თარიღისთვის „შენახვა“ საკმარისია.</p>
+                      <p id="eventFormMsg" class="form-message"></p>
+                    </form>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Media -->
+              <section id="adminTabMedia" class="admin-panel" data-panel="media" hidden>
+                <div class="admin-panel__head">
+                  <h2>მედია &amp; ვიდეო</h2>
+                  <p class="admin-panel__hint">ატვირთული ფოტოები ავტომატურად ჩანს <a href="gallery.html">გალერეაში</a>.</p>
+                </div>
+                <div class="admin-media-hub">
+                  <label class="form-field">
+                    <span>აირჩიეთ ოპერაცია</span>
+                    <select id="mediaEventSelect" class="admin-media-select">
+                      <option value="">— ოპერაცია —</option>
+                    </select>
+                  </label>
+
+                  <div id="mediaUploadZone" class="admin-dropzone" hidden>
+                    <div class="admin-dropzone__icon" aria-hidden="true">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 20h16"/>
+                      </svg>
+                    </div>
+                    <p class="admin-dropzone__title">გადაიტანეთ ფოტო ან ვიდეო აქ</p>
+                    <p class="admin-dropzone__sub">ან აირჩიეთ ფაილი — MP4, JPG, PNG (მაქს. 100MB)</p>
+                    <form id="mediaUploadForm" class="admin-upload admin-upload--prominent">
+                      <input type="file" id="mediaFileInput" name="file" accept="image/*,video/*" required />
+                      <input type="text" name="altText" placeholder="აღწერა (არასავალდებულო)" />
+                      <button type="submit" class="btn btn-primary">ატვირთვა</button>
+                    </form>
+                    <p id="mediaUploadMsg" class="form-message"></p>
+                  </div>
+
+                  <div id="mediaSelectPrompt" class="admin-empty">
+                    <p>ჯერ აირჩიეთ ოპერაცია ზემოდან, შემდეგ ატვირთეთ ფოტო ან ვიდეო.</p>
+                  </div>
+
+                  <ul id="mediaList" class="admin-media-list admin-media-list--grid"></ul>
+                </div>
+              </section>
+
+              <!-- Settings -->
+              <section id="adminTabSettings" class="admin-panel" data-panel="settings" hidden>
+                <div class="admin-panel__head">
+                  <h2>პარამეტრები</h2>
+                </div>
+                <div class="admin-settings">
+                  <div class="admin-settings__card">
+                    <h3>Supabase სინქრონიზაცია</h3>
+                    <p>ღონისძიებების გადმოტანა Supabase-დან ლოკალურ ბაზაში.</p>
+                    <button type="button" id="syncSupabase" class="btn btn-outline btn-sm">სინქრონიზაცია</button>
+                  </div>
+                  <div class="admin-settings__card">
+                    <h3>ადმინისტრატორი</h3>
+                    <p id="adminAccountInfo">—</p>
+                    <a href="account.html" class="btn btn-ghost btn-sm">ჩემი ანგარიში</a>
+                  </div>
+                  <div class="admin-settings__card">
+                    <h3>როგორ ავტვირთო ვიდეო?</h3>
+                    <ol class="admin-settings__steps">
+                      <li>შექმენით ან აირჩიეთ ოპერაცია ტაბში „ოპერაციები“</li>
+                      <li>გადადით „მედია &amp; ვიდეო“ ტაბზე</li>
+                      <li>აირჩიეთ ოპერაცია და ატვირთეთ ფაილი</li>
+                    </ol>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="./cart-store.js"></script>
+    <script src="./api.js"></script>
+    <script src="./script.js"></script>
+    <script src="./admin.js"></script>
+  </body>
+</html>

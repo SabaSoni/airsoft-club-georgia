@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ka">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ვიდეოები | Airsoft Club Georgia</title>
+    <meta
+      name="description"
+      content="აირსოფტის ღონისძიებების ოფიციალური ვიდეოები — ბირთვული ზამთარი, ტაქტიკური ოპერაციები და ფედერაციის ღონისძიებები."
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="./assets/logo-circle.png" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-page="videos">
+    <a href="#main-content" class="skip-link">მთავარ კონტენტზე გადასვლა</a>
+    <div id="pageTransition" class="page-transition" aria-hidden="true">
+      <img src="./assets/logo-circle.png" alt="" class="page-transition__logo" />
+    </div>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="index.html" class="site-logo" aria-label="Airsoft Club Georgia მთავარი">
+          <img src="./assets/logo-circle.png" alt="Airsoft Club Georgia მრგვალი ლოგო" class="site-logo__circle" />
+        </a>
+        <nav class="site-nav" aria-label="მთავარი ნავიგაცია">
+          <a href="index.html" class="site-nav__link" data-page="index">მთავარი</a>
+          <a href="shop.html" class="site-nav__link" data-page="shop">მაღაზია</a>
+          <a href="operations.html" class="site-nav__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+          <a href="gallery.html" class="site-nav__link" data-page="gallery">გალერეა</a>
+          <a href="contact.html" class="site-nav__link" data-page="contact">კონტაქტი</a>
+          <a href="about.html" class="site-nav__link" data-page="about">ჩვენს შესახებ</a>
+        </nav>
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-primary btn-sm header-auth-btn" id="headerAuthBtn">შესვლა</a>
+          <button
+            id="menuToggle"
+            class="menu-toggle"
+            aria-label="მენიუს გახსნა"
+            aria-expanded="false"
+            aria-controls="mobileMenu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <nav id="mobileMenu" class="mobile-menu" aria-label="მობილური ნავიგაცია">
+      <a href="index.html" class="mobile-menu__link" data-page="index">მთავარი</a>
+      <a href="shop.html" class="mobile-menu__link" data-page="shop">მაღაზია</a>
+      <a href="operations.html" class="mobile-menu__link" data-page="operations">ოპერაციები/ღონისძიებები</a>
+      <a href="gallery.html" class="mobile-menu__link" data-page="gallery">გალერეა</a>
+      <a href="contact.html" class="mobile-menu__link" data-page="contact">კონტაქტი</a>
+      <a href="about.html" class="mobile-menu__link" data-page="about">ჩვენს შესახებ</a>
+    </nav>
+
+    <main id="main-content">
+      <section class="page-hero page-hero--videos page-hero--tall">
+        <div class="page-hero__bg">
+          <img src="./assets/hero-action.jpg" alt="" />
+        </div>
+        <div class="page-hero__overlay" aria-hidden="true"></div>
+        <div class="page-hero__grain" aria-hidden="true"></div>
+        <div class="page-hero__accent" aria-hidden="true"></div>
+        <div class="page-hero__content">
+          <nav class="page-hero__crumb reveal-up" aria-label="ნავიგაცია">
+            <a href="index.html">მთავარი</a>
+            <span class="page-hero__crumb-sep" aria-hidden="true">/</span>
+            <a href="operations.html">ოპერაციები</a>
+            <span class="page-hero__crumb-sep" aria-hidden="true">/</span>
+            <span>ვიდეოები</span>
+          </nav>
+          <span class="page-hero__eyebrow reveal-up">ვიდეო არქივი</span>
+          <h1 class="page-hero__title reveal-up">ღონისძიებების ვიდეოები</h1>
+          <p class="page-hero__lead reveal-up">ოფიციალური ჩანაწერები ფედერაციის ოპერაციებიდან და ACG გუნდის ღონისძიებებიდან.</p>
+          <div class="page-hero__chips reveal-up">
+            <span class="page-hero__chip">3 ვიდეო</span>
+            <span class="page-hero__chip">1080p</span>
+            <span class="page-hero__chip">არქივი</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--surface videos-section">
+        <div class="container">
+          <div class="videos-cinema reveal-up">
+            <div class="videos-cinema__stage" id="videosStage">
+              <div class="videos-cinema__player-wrap">
+                <video
+                  id="videosMainPlayer"
+                  class="videos-cinema__player"
+                  controls
+                  playsinline
+                  preload="metadata"
+                  poster="./assets/nuclear-winter-poster.jpg"
+                ></video>
+              </div>
+              <div class="videos-cinema__now-playing">
+                <span class="videos-cinema__badge">ახლა უყურებთ</span>
+                <h2 id="videosMainTitle" class="videos-cinema__title">—</h2>
+                <p id="videosMainMeta" class="videos-cinema__meta"></p>
+                <p id="videosMainDesc" class="videos-cinema__desc"></p>
+              </div>
+            </div>
+
+            <aside class="videos-cinema__sidebar" aria-label="ვიდეოების სია">
+              <div class="videos-cinema__sidebar-head">
+                <h3 class="videos-cinema__sidebar-title">ყველა ვიდეო</h3>
+                <span id="videosCount" class="videos-cinema__count">3</span>
+              </div>
+              <div id="videosPlaylist" class="videos-playlist" role="listbox" aria-label="ღონისძიების ვიდეოები"></div>
+            </aside>
+          </div>
+
+          <div class="videos-cta reveal-up">
+            <p>გინდა მომავალ ოპერაციებში მონაწილეობა?</p>
+            <div class="videos-cta__actions">
+              <a href="operations.html" class="btn btn-primary">ღონისძიებების კალენდარი</a>
+              <a
+                href="https://www.facebook.com/airsoft.georgia.federation"
+                target="_blank"
+                rel="noreferrer"
+                class="btn btn-outline"
+                >ფედერაცია Facebook-ზე</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__grid">
+          <div class="site-footer__brand">
+            <img src="./assets/logo-circle.png" alt="Airsoft Club Georgia ლოგო" />
+            <p class="site-footer__tagline">თამაში, მაღაზია, სერვისი — აირსოფტი საქართველოში.</p>
+          </div>
+          <div>
+            <h3 class="site-footer__heading">ბმულები</h3>
+            <ul class="site-footer__links">
+              <li><a href="index.html">მთავარი</a></li>
+              <li><a href="operations.html">ოპერაციები</a></li>
+              <li><a href="videos.html">ვიდეოები</a></li>
+              <li><a href="gallery.html">გალერეა</a></li>
+              <li><a href="contact.html">კონტაქტი</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="site-footer__heading">კონტაქტი</h3>
+            <ul class="site-footer__contact">
+              <li><a href="tel:+995596206090">+995 596 20 60 90</a></li>
+              <li>თბილისი, ვაჟა-ფშაველას გამზირი 78ა</li>
+            </ul>
+          </div>
+        </div>
+        <div class="site-footer__bottom">
+          <p>© <span id="year"></span> Airsoft Club Georgia — ყველა უფლება დაცულია.</p>
+          <a href="#" class="back-to-top-footer">↑ ზემოთ</a>
+        </div>
+      </div>
+    </footer>
+
+    <button id="backToTop" class="back-to-top" aria-label="ზემოთ დაბრუნება">↑</button>
+
+    <script src="./transitions.js"></script>
+    <script src="./cart.js"></script>
+    <script src="./script.js"></script>
+    <script src="./videos.js"></script>
+  </body>
+</html>

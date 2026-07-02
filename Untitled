@@ -1,0 +1,8 @@
+PORT=3000
+SESSION_SECRET=change-this-to-a-long-random-string
+NODE_ENV=development
+
+# Optional — Supabase events (add events in Supabase Dashboard or admin panel)
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
