@@ -2,6 +2,7 @@ const API_BASE = "";
 
 let supabaseClient = null;
 let configPromise = null;
+let profileCache = null;
 
 async function loadConfig() {
   if (!configPromise) {
@@ -24,6 +25,19 @@ async function ensureSupabase() {
 }
 
 window.ACG_SUPABASE_READY = ensureSupabase();
+
+async function getSession() {
+  const sb = await ensureSupabase();
+  if (!sb) return null;
+  const {
+    data: { session }
+  } = await sb.auth.getSession();
+  return session;
+}
+
+function clearProfileCache() {
+  profileCache = null;
+}
 
 async function authHeaders() {
   const sb = await ensureSupabase();
@@ -181,8 +195,9 @@ window.ACG_API = {
     }
 
     if (data.session) {
+      clearProfileCache();
       await maybePromoteAdmin();
-      const me = await this.getMe();
+      const me = await this.getMe({ force: true });
       return {
         message: me.user?.isAdmin ? "ადმინისტრატორის ანგარიში შეიქმნა" : "რეგისტრაცია წარმატებულია",
         user: me.user
@@ -217,19 +232,39 @@ window.ACG_API = {
       throw new Error(error.message || "არასწორი ელფოსტა ან პაროლი");
     }
 
+    clearProfileCache();
     await maybePromoteAdmin();
-    const me = await this.getMe();
+    const me = await this.getMe({ force: true });
     return { message: "წარმატებით შეხვედით", user: me.user };
   },
 
   async logout() {
     const sb = await ensureSupabase();
     if (sb) await sb.auth.signOut();
+    clearProfileCache();
     return { message: "გამოსვლა წარმატებულია" };
   },
 
-  getMe() {
-    return apiRequest("/api/auth/me");
+  getMe(options = {}) {
+    if (!options.force && profileCache) {
+      return Promise.resolve(profileCache);
+    }
+    return apiRequest("/api/auth/me").then((data) => {
+      profileCache = data;
+      return data;
+    });
+  },
+
+  async getSessionUser() {
+    const session = await getSession();
+    if (!session?.user) return null;
+    const user = session.user;
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.user_metadata?.name || user.email.split("@")[0],
+      isAdmin: false
+    };
   },
 
   getRegisterStatus() {

@@ -4,6 +4,8 @@
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const TRANSITION_KEY = "acg-page-transition";
+  const EXIT_MS = 140;
+  const REVEAL_MS = 180;
 
   function resetOverlay() {
     overlay.classList.remove("is-exiting", "is-revealing", "is-done");
@@ -18,7 +20,6 @@
     }
   }
 
-  // Always start from a clean overlay (guards bfcache / back-button restores).
   resetOverlay();
 
   window.addEventListener("pageshow", (event) => {
@@ -28,16 +29,19 @@
     }
   });
 
-  // Strip transition classes before the page is cached so Back does not restore a black screen.
   window.addEventListener("pagehide", () => {
     resetOverlay();
+  });
+
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(resetOverlay, 500);
   });
 
   if (!prefersReduced && sessionStorage.getItem(TRANSITION_KEY)) {
     sessionStorage.removeItem(TRANSITION_KEY);
     overlay.classList.add("is-revealing");
     requestAnimationFrame(() => overlay.classList.add("is-done"));
-    setTimeout(() => resetOverlay(), 320);
+    setTimeout(() => resetOverlay(), REVEAL_MS);
   }
 
   if (prefersReduced) return;
@@ -50,6 +54,7 @@
     const href = link.getAttribute("href");
     if (!href || href.startsWith("#") || href.startsWith("tel:") || href.startsWith("mailto:")) return;
     if (!isSameOrigin(href)) return;
+    if (href.includes("login.html?action=login")) return;
 
     e.preventDefault();
     sessionStorage.setItem(TRANSITION_KEY, "1");
@@ -57,6 +62,6 @@
 
     setTimeout(() => {
       window.location.href = href;
-    }, 220);
+    }, EXIT_MS);
   });
 })();

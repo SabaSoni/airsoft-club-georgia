@@ -98,54 +98,86 @@
 
   const ACCOUNT_ICON_SVG = `<svg class="header-icon-btn__svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
 
+  let authHeaderBound = false;
+
+  function updateAuthHeader(user) {
+    const btn = document.getElementById("headerAuthBtn");
+    if (!btn) return;
+
+    btn.classList.remove("is-loading");
+    document.getElementById("headerAccountBtn")?.remove();
+    document.getElementById("headerAdminBtn")?.remove();
+
+    if (!user) {
+      btn.textContent = "შესვლა";
+      btn.className = "btn btn-primary btn-sm header-auth-btn";
+      btn.href = "login.html";
+      return;
+    }
+
+    const actions = document.querySelector(".header-actions");
+    if (actions) {
+      const accountLink = document.createElement("a");
+      accountLink.id = "headerAccountBtn";
+      accountLink.href = "account.html";
+      accountLink.className = "btn btn-ghost header-icon-btn";
+      accountLink.setAttribute("aria-label", "ჩემი ანგარიში");
+      accountLink.title = "ჩემი ანგარიში";
+      accountLink.innerHTML = ACCOUNT_ICON_SVG;
+      actions.insertBefore(accountLink, btn);
+
+      if (user.isAdmin) {
+        const adminLink = document.createElement("a");
+        adminLink.id = "headerAdminBtn";
+        adminLink.href = "admin.html";
+        adminLink.className = "btn btn-ghost btn-sm";
+        adminLink.textContent = "ადმინი";
+        actions.insertBefore(adminLink, btn);
+      }
+    }
+
+    btn.textContent = "გამოსვლა";
+    btn.className = "btn btn-outline btn-sm header-auth-btn";
+    btn.href = "#";
+
+    if (!authHeaderBound) {
+      authHeaderBound = true;
+      btn.addEventListener("click", async (e) => {
+        if (btn.href !== "#") return;
+        e.preventDefault();
+        await window.ACG_API.logout();
+        updateAuthHeader(null);
+        window.location.href = "index.html";
+      });
+    }
+  }
+
   /* Header auth button */
   async function initAuthHeader() {
     const btn = document.getElementById("headerAuthBtn");
     if (!btn || !window.ACG_API?.getMe) return;
 
+    btn.classList.add("is-loading");
+
+    try {
+      const quick = await window.ACG_API.getSessionUser();
+      if (quick) updateAuthHeader(quick);
+    } catch (_) {}
+
     try {
       const { user } = await window.ACG_API.getMe();
-      if (user) {
-        const actions = document.querySelector(".header-actions");
-        if (actions && !document.getElementById("headerAccountBtn")) {
-          const accountLink = document.createElement("a");
-          accountLink.id = "headerAccountBtn";
-          accountLink.href = "account.html";
-          accountLink.className = "btn btn-ghost header-icon-btn";
-          accountLink.setAttribute("aria-label", "ჩემი ანგარიში");
-          accountLink.title = "ჩემი ანგარიში";
-          accountLink.innerHTML = ACCOUNT_ICON_SVG;
-          actions.insertBefore(accountLink, btn);
-        }
-
-        btn.textContent = "გამოსვლა";
-        btn.classList.remove("btn-primary");
-        btn.classList.add("btn-outline");
-        btn.href = "#";
-        btn.addEventListener("click", async (e) => {
-          e.preventDefault();
-          await window.ACG_API.logout();
-          window.location.href = "index.html";
-        });
-
-        if (user.isAdmin) {
-          const actions = document.querySelector(".header-actions");
-          if (actions && !document.getElementById("headerAdminBtn")) {
-            const adminLink = document.createElement("a");
-            adminLink.id = "headerAdminBtn";
-            adminLink.href = "admin.html";
-            adminLink.className = "btn btn-ghost btn-sm";
-            adminLink.textContent = "ადმინი";
-            actions.insertBefore(adminLink, btn);
-          }
-        } else {
-          document.getElementById("headerAdminBtn")?.remove();
-        }
-      }
-    } catch (_) {}
+      updateAuthHeader(user);
+    } catch (_) {
+      btn.classList.remove("is-loading");
+    }
   }
 
   initAuthHeader();
+
+  /* Show hero and auth content immediately — no blank wait for scroll observer */
+  document
+    .querySelectorAll(".page-hero [class*='reveal'], .auth-panel__card, .auth-session")
+    .forEach((el) => el.classList.add("is-visible"));
 
   /* Contact form */
   const contactForm = document.getElementById("contactForm");

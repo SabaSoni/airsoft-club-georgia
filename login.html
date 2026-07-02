@@ -26,10 +26,10 @@
         <div class="auth-showcase__bg" aria-hidden="true">
           <video
             class="auth-showcase__video"
-            autoplay
             muted
             loop
             playsinline
+            preload="none"
             poster="./assets/nuclear-winter-poster.jpg"
           >
             <source src="./assets/FDownloader.net-1013343016867147-(1080p).mp4" type="video/mp4" />
@@ -70,12 +70,27 @@
         </header>
 
         <main id="main-content" class="auth-panel">
-          <div class="auth-panel__card reveal-up">
+          <div class="auth-panel__card is-visible">
             <div class="auth-panel__head">
+              <p class="auth-panel__eyebrow">Airsoft Club Georgia</p>
               <h2 class="auth-panel__title">ანგარიში</h2>
-              <p class="auth-panel__sub">შესვლა ან რეგისტრაცია</p>
+              <p class="auth-panel__sub">შესვლა ან ახალი ანგარიშის შექმნა</p>
             </div>
 
+            <div id="authSessionPanel" class="auth-session" hidden>
+              <div class="auth-session__avatar" id="authSessionAvatar" aria-hidden="true">A</div>
+              <p class="auth-session__label">თქვენ უკვე შესული ხართ</p>
+              <p class="auth-session__name" id="authSessionName"></p>
+              <p class="auth-session__email" id="authSessionEmail"></p>
+              <div class="auth-session__actions">
+                <button type="button" class="btn btn-primary auth-submit" id="authContinueBtn">ჩემი ანგარიში</button>
+                <button type="button" class="btn btn-outline auth-session__switch" id="authSwitchAccount">
+                  სხვა ანგარიშით შესვლა
+                </button>
+              </div>
+            </div>
+
+            <div id="authFormsWrap">
             <p id="registerHint" class="auth-hint" hidden></p>
 
             <div class="auth-tabs" role="tablist" aria-label="ანგარიშის ტიპი">
@@ -216,6 +231,7 @@
               ანგარიშის გარეშე გინდათ შეძენა?
               <a href="shop.html">მაღაზია</a>
             </p>
+            </div>
           </div>
 
           <p class="auth-copyright">© <span id="year"></span> Airsoft Club Georgia</p>
