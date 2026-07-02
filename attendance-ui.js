@@ -120,9 +120,9 @@
     if (!root) return;
     bind(root);
 
-    if (window.ACG_API?.getMe) {
-      window.ACG_API.getMe()
-        .then(({ user }) => {
+    if (window.ACG_AUTH) {
+      window.ACG_AUTH.waitReady()
+        .then((user) => {
           const btn = root.querySelector(".attendance-btn");
           const login = root.querySelector(".attendance-login");
           if (!user) {

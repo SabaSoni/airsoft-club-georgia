@@ -3,6 +3,7 @@
 
   const gate = document.getElementById("accountGate");
   const app = document.getElementById("accountApp");
+  const loading = document.getElementById("accountLoading");
   const gateMsg = document.getElementById("accountGateMsg");
 
   function escapeHtml(str) {
@@ -34,6 +35,10 @@
     if (!el) return;
     el.textContent = text;
     el.classList.toggle("is-error", isError);
+  }
+
+  function showLoading(show) {
+    if (loading) loading.hidden = !show;
   }
 
   function showGate(message) {
@@ -226,25 +231,33 @@
     setupPasswordForms();
     setupLogout();
 
+    gate.hidden = true;
+    app.hidden = true;
+    showLoading(true);
+
     if (!window.ACG_API) {
+      showLoading(false);
       showGate("სერვერი არ მუშაობს — გაუშვით npm start და გახსენით localhost:3000");
       return;
     }
 
     try {
-      const { user } = await window.ACG_API.getMe();
-      if (!user) {
+      const sessionUser = await window.ACG_AUTH.waitReady();
+      if (!sessionUser) {
+        showLoading(false);
         showGate();
         return;
       }
 
       try {
         const data = await window.ACG_API.getDashboard();
+        showLoading(false);
         renderDashboard(data);
       } catch (err) {
-        const { user: me } = await window.ACG_API.getMe();
+        const { user: me } = await window.ACG_API.getMe({ force: true });
+        showLoading(false);
         renderDashboard({
-          user: me || user,
+          user: me || sessionUser,
           orders: [],
           eventsUpcoming: [],
           eventsAttended: []
@@ -252,6 +265,7 @@
         console.warn("Dashboard partial load:", err.message);
       }
     } catch (err) {
+      showLoading(false);
       showGate(err.message || "შესვლა საჭიროა");
     }
   }

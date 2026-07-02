@@ -47,7 +47,12 @@
 
     <main id="main-content" class="account-page">
       <div class="container">
-        <div id="accountGate" class="account-gate">
+        <div id="accountLoading" class="account-loading" aria-live="polite">
+          <span class="account-loading__spinner" aria-hidden="true"></span>
+          <p>ანგარიში იტვირთება...</p>
+        </div>
+
+        <div id="accountGate" class="account-gate" hidden>
           <div class="account-gate__card reveal-up">
             <img src="./assets/logo-circle.png" alt="" class="account-gate__logo" />
             <h1>ჩემი ანგარიში</h1>

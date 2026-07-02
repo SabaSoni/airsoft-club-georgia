@@ -1,8 +1,109 @@
 const API_BASE = "";
 
+const AUTH_HINT_KEY = "acg-auth-hint";
+const SUPABASE_CDN =
+  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/+esm";
+
 let supabaseClient = null;
 let configPromise = null;
 let profileCache = null;
+let authBootstrapped = false;
+let authReady = false;
+let authUser = null;
+const authListeners = new Set();
+
+function mapSessionUser(authUser) {
+  return {
+    id: authUser.id,
+    email: authUser.email,
+    name: authUser.user_metadata?.name || authUser.email.split("@")[0],
+    phone: authUser.user_metadata?.phone || null,
+    role: "user",
+    isAdmin: false
+  };
+}
+
+function readAuthHint() {
+  try {
+    const raw = sessionStorage.getItem(AUTH_HINT_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeAuthHint(user) {
+  try {
+    if (!user) {
+      sessionStorage.removeItem(AUTH_HINT_KEY);
+      document.documentElement.removeAttribute("data-auth");
+      return;
+    }
+    sessionStorage.setItem(
+      AUTH_HINT_KEY,
+      JSON.stringify({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        isAdmin: !!user.isAdmin
+      })
+    );
+    document.documentElement.setAttribute("data-auth", "in");
+  } catch (_) {}
+}
+
+function notifyAuthListeners() {
+  authListeners.forEach((fn) => {
+    try {
+      fn(authUser);
+    } catch (_) {}
+  });
+}
+
+function setAuthUser(user) {
+  authUser = user;
+  writeAuthHint(user);
+  notifyAuthListeners();
+}
+
+async function refreshAuthState() {
+  const session = await getSession();
+  if (!session?.user) {
+    clearProfileCache();
+    setAuthUser(null);
+    authReady = true;
+    return null;
+  }
+
+  const quick = mapSessionUser(session.user);
+  setAuthUser(quick);
+
+  try {
+    const data = await apiRequest("/api/auth/me");
+    if (data.user) {
+      profileCache = data;
+      setAuthUser(data.user);
+    }
+  } catch (_) {}
+
+  authReady = true;
+  return authUser;
+}
+
+function bootstrapAuthListener(sb) {
+  if (authBootstrapped || !sb) return;
+  authBootstrapped = true;
+  sb.auth.onAuthStateChange(() => {
+    refreshAuthState();
+  });
+}
+
+(function applyAuthHintEarly() {
+  const hint = readAuthHint();
+  if (hint?.email) {
+    document.documentElement.setAttribute("data-auth", "in");
+  }
+})();
 
 async function loadConfig() {
   if (!configPromise) {
@@ -17,10 +118,18 @@ async function ensureSupabase() {
   if (supabaseClient) return supabaseClient;
   const config = await loadConfig();
   if (!config.supabaseUrl || !config.supabaseAnonKey) return null;
-  const { createClient } = await import(
-    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/+esm"
-  );
+
+  if (!document.querySelector('link[data-acg-supabase-preload]')) {
+    const preload = document.createElement("link");
+    preload.rel = "modulepreload";
+    preload.href = SUPABASE_CDN;
+    preload.setAttribute("data-acg-supabase-preload", "");
+    document.head.appendChild(preload);
+  }
+
+  const { createClient } = await import(SUPABASE_CDN);
   supabaseClient = createClient(config.supabaseUrl, config.supabaseAnonKey);
+  bootstrapAuthListener(supabaseClient);
   return supabaseClient;
 }
 
@@ -197,6 +306,7 @@ window.ACG_API = {
     if (data.session) {
       clearProfileCache();
       await maybePromoteAdmin();
+      await refreshAuthState();
       const me = await this.getMe({ force: true });
       return {
         message: me.user?.isAdmin ? "ადმინისტრატორის ანგარიში შეიქმნა" : "რეგისტრაცია წარმატებულია",
@@ -234,37 +344,35 @@ window.ACG_API = {
 
     clearProfileCache();
     await maybePromoteAdmin();
+    await refreshAuthState();
     const me = await this.getMe({ force: true });
-    return { message: "წარმატებით შეხვედით", user: me.user };
+    return { message: "წარმატებით შეხვედით", user: me.user || authUser };
   },
 
   async logout() {
     const sb = await ensureSupabase();
     if (sb) await sb.auth.signOut();
     clearProfileCache();
+    setAuthUser(null);
+    authReady = true;
     return { message: "გამოსვლა წარმატებულია" };
   },
 
   getMe(options = {}) {
-    if (!options.force && profileCache) {
+    if (!options.force && profileCache?.user) {
       return Promise.resolve(profileCache);
     }
     return apiRequest("/api/auth/me").then((data) => {
-      profileCache = data;
+      if (data.user) profileCache = data;
       return data;
     });
   },
 
   async getSessionUser() {
+    if (authUser) return authUser;
     const session = await getSession();
     if (!session?.user) return null;
-    const user = session.user;
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.user_metadata?.name || user.email.split("@")[0],
-      isAdmin: false
-    };
+    return mapSessionUser(session.user);
   },
 
   getRegisterStatus() {
@@ -342,3 +450,36 @@ window.ACG_API = {
     return apiRequest(`/api/events/${encodeURIComponent(slug)}/attend`, { method: "DELETE" });
   }
 };
+
+window.ACG_AUTH = {
+  readHint: readAuthHint,
+
+  getUser() {
+    return authUser;
+  },
+
+  isReady() {
+    return authReady;
+  },
+
+  waitReady() {
+    if (authReady) return Promise.resolve(authUser);
+    return authInitPromise.then(() => authUser);
+  },
+
+  subscribe(fn) {
+    authListeners.add(fn);
+    const hint = readAuthHint();
+    if (hint?.email && !authUser) fn(hint);
+    else if (authUser) fn(authUser);
+    return () => authListeners.delete(fn);
+  },
+
+  refresh: refreshAuthState
+};
+
+const authInitPromise = window.ACG_SUPABASE_READY.then((sb) => {
+  if (sb) return refreshAuthState();
+  authReady = true;
+  return null;
+});

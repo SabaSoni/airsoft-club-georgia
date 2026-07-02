@@ -152,24 +152,21 @@
     }
   }
 
-  /* Header auth button */
-  async function initAuthHeader() {
+  /* Header auth button — single source of truth via ACG_AUTH */
+  function initAuthHeader() {
     const btn = document.getElementById("headerAuthBtn");
-    if (!btn || !window.ACG_API?.getMe) return;
+    if (!btn || !window.ACG_AUTH) return;
 
-    btn.classList.add("is-loading");
-
-    try {
-      const quick = await window.ACG_API.getSessionUser();
-      if (quick) updateAuthHeader(quick);
-    } catch (_) {}
-
-    try {
-      const { user } = await window.ACG_API.getMe();
-      updateAuthHeader(user);
-    } catch (_) {
-      btn.classList.remove("is-loading");
+    const hint = window.ACG_AUTH.readHint();
+    if (hint?.email) {
+      updateAuthHeader(hint);
+    } else {
+      btn.classList.add("is-loading");
     }
+
+    window.ACG_AUTH.subscribe((user) => {
+      updateAuthHeader(user);
+    });
   }
 
   initAuthHeader();
