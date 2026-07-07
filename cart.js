@@ -26,15 +26,11 @@
 
   async function refreshBadge() {
     const countEl = document.getElementById("cartCount");
-    if (!countEl || !window.ACG_API) return;
+    if (!countEl) return;
 
-    try {
-      const { itemCount } = await window.ACG_API.getCart();
-      countEl.textContent = String(itemCount);
-      countEl.classList.toggle("is-hidden", itemCount === 0);
-    } catch {
-      countEl.textContent = "0";
-    }
+    const count = window.ACG_CART_STORE?.getItemCount?.() ?? 0;
+    countEl.textContent = String(count);
+    countEl.classList.toggle("is-hidden", count === 0);
   }
 
   window.ACG_Cart = { refreshBadge };

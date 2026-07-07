@@ -1,7 +1,16 @@
 const FEDERATION_FB = "https://www.facebook.com/airsoft.georgia.federation";
 
+const LOADING_HTML = `<p class="shop-loading">იტვირთება...</p>`;
+
 let eventsData = { upcoming: [], ongoing: [], past: [], events: [], week: null };
 let weekRefreshTimer = null;
+
+function setSectionLoading(ids) {
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = LOADING_HTML;
+  });
+}
 
 function observeReveals(container) {
   if (!window.ACG?.revealObserver) return;
@@ -229,17 +238,20 @@ function renderPastOperations(container) {
 }
 
 async function initOperations() {
+  const timeline = document.getElementById("operationsTimeline");
+  const teaser = document.getElementById("operationsTeaser");
+  const pastGrid = document.getElementById("pastOpsGrid");
+
+  setSectionLoading(["operationsTimeline", "operationsTeaser", "pastOpsGrid"]);
+
   try {
-    eventsData = await window.ACG_EVENTS.getAll();
+    const loader = window.ACG_EVENTS_LOAD || window.ACG_EVENTS.getAll();
+    eventsData = await loader;
     window.ACG.operations = eventsData;
   } catch (err) {
     console.error(err);
     eventsData = { upcoming: [], ongoing: [], past: [], events: [], week: null };
   }
-
-  const timeline = document.getElementById("operationsTimeline");
-  const teaser = document.getElementById("operationsTeaser");
-  const pastGrid = document.getElementById("pastOpsGrid");
 
   updateWeekLabel();
   renderCountdownSection(eventsData.upcoming.find((e) => e.featured) || eventsData.upcoming[0]);

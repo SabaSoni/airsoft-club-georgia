@@ -1,6 +1,5 @@
 const API_BASE = "";
 
-const AUTH_HINT_KEY = "acg-auth-hint";
 const SUPABASE_CDN =
   "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/+esm";
 
@@ -12,43 +11,26 @@ let authReady = false;
 let authUser = null;
 const authListeners = new Set();
 
-function mapSessionUser(authUser) {
+function mapSessionUser(user) {
   return {
-    id: authUser.id,
-    email: authUser.email,
-    name: authUser.user_metadata?.name || authUser.email.split("@")[0],
-    phone: authUser.user_metadata?.phone || null,
+    id: user.id,
+    email: user.email,
+    name: user.user_metadata?.name || user.email.split("@")[0],
+    phone: user.user_metadata?.phone || null,
     role: "user",
     isAdmin: false
   };
 }
 
-function readAuthHint() {
+/** Remove old persistent tokens — they caused silent re-login days later. */
+function clearLegacySupabaseStorage() {
   try {
-    const raw = sessionStorage.getItem(AUTH_HINT_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-}
-
-function writeAuthHint(user) {
-  try {
-    if (!user) {
-      sessionStorage.removeItem(AUTH_HINT_KEY);
-      document.documentElement.removeAttribute("data-auth");
-      return;
+    for (const key of Object.keys(localStorage)) {
+      if (key.startsWith("sb-") && key.includes("auth-token")) {
+        localStorage.removeItem(key);
+      }
     }
-    sessionStorage.setItem(
-      AUTH_HINT_KEY,
-      JSON.stringify({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        isAdmin: !!user.isAdmin
-      })
-    );
-    document.documentElement.setAttribute("data-auth", "in");
+    sessionStorage.removeItem("acg-auth-hint");
   } catch (_) {}
 }
 
@@ -62,21 +44,32 @@ function notifyAuthListeners() {
 
 function setAuthUser(user) {
   authUser = user;
-  writeAuthHint(user);
   notifyAuthListeners();
 }
 
 async function refreshAuthState() {
-  const session = await getSession();
-  if (!session?.user) {
+  const sb = await ensureSupabase();
+  if (!sb) {
     clearProfileCache();
     setAuthUser(null);
     authReady = true;
     return null;
   }
 
-  const quick = mapSessionUser(session.user);
-  setAuthUser(quick);
+  const {
+    data: { user },
+    error
+  } = await sb.auth.getUser();
+
+  if (error || !user) {
+    await sb.auth.signOut({ scope: "local" }).catch(() => {});
+    clearProfileCache();
+    setAuthUser(null);
+    authReady = true;
+    return null;
+  }
+
+  setAuthUser(mapSessionUser(user));
 
   try {
     const data = await apiRequest("/api/auth/me");
@@ -93,17 +86,19 @@ async function refreshAuthState() {
 function bootstrapAuthListener(sb) {
   if (authBootstrapped || !sb) return;
   authBootstrapped = true;
-  sb.auth.onAuthStateChange(() => {
+  sb.auth.onAuthStateChange((event) => {
+    if (event === "INITIAL_SESSION") return;
+    if (event === "SIGNED_OUT") {
+      clearProfileCache();
+      setAuthUser(null);
+      authReady = true;
+      return;
+    }
     refreshAuthState();
   });
 }
 
-(function applyAuthHintEarly() {
-  const hint = readAuthHint();
-  if (hint?.email) {
-    document.documentElement.setAttribute("data-auth", "in");
-  }
-})();
+clearLegacySupabaseStorage();
 
 async function loadConfig() {
   if (!configPromise) {
@@ -128,7 +123,14 @@ async function ensureSupabase() {
   }
 
   const { createClient } = await import(SUPABASE_CDN);
-  supabaseClient = createClient(config.supabaseUrl, config.supabaseAnonKey);
+  supabaseClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+    auth: {
+      storage: window.sessionStorage,
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true
+    }
+  });
   bootstrapAuthListener(supabaseClient);
   return supabaseClient;
 }
@@ -352,6 +354,7 @@ window.ACG_API = {
   async logout() {
     const sb = await ensureSupabase();
     if (sb) await sb.auth.signOut();
+    clearLegacySupabaseStorage();
     clearProfileCache();
     setAuthUser(null);
     authReady = true;
@@ -452,8 +455,6 @@ window.ACG_API = {
 };
 
 window.ACG_AUTH = {
-  readHint: readAuthHint,
-
   getUser() {
     return authUser;
   },
@@ -469,9 +470,7 @@ window.ACG_AUTH = {
 
   subscribe(fn) {
     authListeners.add(fn);
-    const hint = readAuthHint();
-    if (hint?.email && !authUser) fn(hint);
-    else if (authUser) fn(authUser);
+    if (authReady) fn(authUser);
     return () => authListeners.delete(fn);
   },
 

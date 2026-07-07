@@ -1,5 +1,8 @@
 /** Events API — reads from /api/events (Supabase-backed when configured) */
 
+const EVENTS_CACHE_KEY = "acg-events-cache-v1";
+const EVENTS_CACHE_MS = 3 * 60 * 1000;
+
 async function apiRequest(path) {
   const res = await fetch(path, { credentials: "same-origin" });
   const data = await res.json().catch(() => ({}));
@@ -7,9 +10,48 @@ async function apiRequest(path) {
   return data;
 }
 
+function readEventsCache() {
+  try {
+    const raw = sessionStorage.getItem(EVENTS_CACHE_KEY);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (!data || Date.now() - ts > EVENTS_CACHE_MS) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function writeEventsCache(data) {
+  try {
+    sessionStorage.setItem(EVENTS_CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+  } catch (_) {}
+}
+
+let eventsFetchPromise = null;
+
+function fetchEventsFresh() {
+  if (!eventsFetchPromise) {
+    eventsFetchPromise = apiRequest("/api/events")
+      .then((data) => {
+        writeEventsCache(data);
+        return data;
+      })
+      .finally(() => {
+        eventsFetchPromise = null;
+      });
+  }
+  return eventsFetchPromise;
+}
+
 window.ACG_EVENTS = {
-  async getAll() {
-    return apiRequest("/api/events");
+  async getAll(options = {}) {
+    const cached = !options.force ? readEventsCache() : null;
+    if (cached) {
+      fetchEventsFresh().catch(() => {});
+      return cached;
+    }
+    return fetchEventsFresh();
   },
 
   async getFeatured() {
@@ -95,3 +137,6 @@ const BADGE_CLASS = {
 };
 
 window.ACG_EVENTS.BADGE_CLASS = BADGE_CLASS;
+
+/** Start loading events immediately (before api.js / Supabase). */
+window.ACG_EVENTS_LOAD = window.ACG_EVENTS.getAll();

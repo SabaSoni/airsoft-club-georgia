@@ -1715,8 +1715,22 @@ ul {
 }
 
 .header-auth-btn.is-loading {
-  opacity: 0.65;
+  opacity: 0.55;
   pointer-events: none;
+  min-width: 4.5rem;
+}
+
+.header-auth-btn.is-loading::after {
+  content: "";
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-left: 0.35rem;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  vertical-align: middle;
+  animation: auth-spin 0.65s linear infinite;
 }
 
 .auth-copyright {

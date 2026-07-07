@@ -57,6 +57,10 @@
 
     clear() {
       write([]);
+    },
+
+    getItemCount() {
+      return read().reduce((sum, line) => sum + (line.quantity || 0), 0);
     }
   };
 })();

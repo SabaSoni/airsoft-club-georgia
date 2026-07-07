@@ -90,7 +90,7 @@
 
   async function checkAccess() {
     try {
-      const { user } = await window.ACG_API.getMe();
+      const user = await window.ACG_AUTH.waitReady();
       if (user?.isAdmin) {
         gate.hidden = true;
         app.hidden = false;

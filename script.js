@@ -152,19 +152,16 @@
     }
   }
 
-  /* Header auth button — single source of truth via ACG_AUTH */
+  /* Header auth — wait for verified session only (no stale hints) */
   function initAuthHeader() {
     const btn = document.getElementById("headerAuthBtn");
     if (!btn || !window.ACG_AUTH) return;
 
-    const hint = window.ACG_AUTH.readHint();
-    if (hint?.email) {
-      updateAuthHeader(hint);
-    } else {
-      btn.classList.add("is-loading");
-    }
+    btn.classList.add("is-loading");
+    btn.setAttribute("aria-busy", "true");
 
     window.ACG_AUTH.subscribe((user) => {
+      btn.removeAttribute("aria-busy");
       updateAuthHeader(user);
     });
   }

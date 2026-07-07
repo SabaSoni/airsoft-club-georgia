@@ -147,10 +147,10 @@ async function setupAdminUpload() {
   const dropzone = document.getElementById("galleryDropzone");
   const fileInput = document.getElementById("galleryFileInput");
 
-  if (!window.ACG_API) return;
+  if (!window.ACG_AUTH) return;
 
   try {
-    const { user } = await window.ACG_API.getMe();
+    const user = await window.ACG_AUTH.waitReady();
     isAdmin = !!user?.isAdmin;
   } catch (_) {
     isAdmin = false;
