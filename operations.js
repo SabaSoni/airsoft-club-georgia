@@ -242,15 +242,28 @@ async function initOperations() {
   const teaser = document.getElementById("operationsTeaser");
   const pastGrid = document.getElementById("pastOpsGrid");
 
-  setSectionLoading(["operationsTimeline", "operationsTeaser", "pastOpsGrid"]);
+  const cached = window.ACG_EVENTS?.getCached?.();
+  if (cached) {
+    eventsData = cached;
+    updateWeekLabel();
+    renderCountdownSection(eventsData.upcoming.find((e) => e.featured) || eventsData.upcoming[0]);
+    if (teaser) renderTeaser(teaser);
+    if (timeline) renderTimeline(timeline);
+    if (pastGrid) renderPastOperations(pastGrid);
+  } else {
+    setSectionLoading(["operationsTimeline", "operationsTeaser", "pastOpsGrid"]);
+  }
 
   try {
     const loader = window.ACG_EVENTS_LOAD || window.ACG_EVENTS.getAll();
     eventsData = await loader;
+    window.ACG = window.ACG || {};
     window.ACG.operations = eventsData;
   } catch (err) {
     console.error(err);
-    eventsData = { upcoming: [], ongoing: [], past: [], events: [], week: null };
+    if (!cached) {
+      eventsData = { upcoming: [], ongoing: [], past: [], events: [], week: null };
+    }
   }
 
   updateWeekLabel();

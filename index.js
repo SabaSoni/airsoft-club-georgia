@@ -1,11 +1,25 @@
 (function () {
   "use strict";
 
-  const heroBg = document.querySelector(".hero--v2 .hero__video");
+  const heroVideo = document.querySelector(".hero--v2 .hero__video");
+  if (!heroVideo) return;
 
-  if (heroBg) {
-    heroBg.play().catch(() => {
-      document.addEventListener("click", () => heroBg.play().catch(() => {}), { once: true });
-    });
+  const startVideo = () => {
+    heroVideo.preload = "auto";
+    heroVideo.play().catch(() => {});
+  };
+
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(startVideo, { timeout: 2500 });
+  } else {
+    setTimeout(startVideo, 400);
   }
+
+  document.addEventListener(
+    "click",
+    () => {
+      if (heroVideo.preload === "none") startVideo();
+    },
+    { once: true, passive: true }
+  );
 })();

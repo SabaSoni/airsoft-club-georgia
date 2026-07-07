@@ -2,10 +2,14 @@ const API_BASE = "";
 
 const SUPABASE_CDN =
   "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/+esm";
+const SUPABASE_LOCAL = "/assets/supabase.min.js";
+const CONFIG_CACHE_KEY = "acg-api-config";
 
 let supabaseClient = null;
 let configPromise = null;
 let profileCache = null;
+let supabaseInitPromise = null;
+let authInitPromise = null;
 let authBootstrapped = false;
 let authReady = false;
 let authUser = null;
@@ -57,11 +61,10 @@ async function refreshAuthState() {
   }
 
   const {
-    data: { user },
-    error
-  } = await sb.auth.getUser();
+    data: { session }
+  } = await sb.auth.getSession();
 
-  if (error || !user) {
+  if (!session?.user) {
     await sb.auth.signOut({ scope: "local" }).catch(() => {});
     clearProfileCache();
     setAuthUser(null);
@@ -69,17 +72,29 @@ async function refreshAuthState() {
     return null;
   }
 
-  setAuthUser(mapSessionUser(user));
-
-  try {
-    const data = await apiRequest("/api/auth/me");
-    if (data.user) {
-      profileCache = data;
-      setAuthUser(data.user);
-    }
-  } catch (_) {}
-
+  setAuthUser(mapSessionUser(session.user));
   authReady = true;
+
+  void (async () => {
+    const {
+      data: { user },
+      error
+    } = await sb.auth.getUser();
+    if (error || !user) {
+      await sb.auth.signOut({ scope: "local" }).catch(() => {});
+      clearProfileCache();
+      setAuthUser(null);
+      return;
+    }
+    try {
+      const data = await apiRequest("/api/auth/me");
+      if (data.user) {
+        profileCache = data;
+        setAuthUser(data.user);
+      }
+    } catch (_) {}
+  })();
+
   return authUser;
 }
 
@@ -102,40 +117,94 @@ clearLegacySupabaseStorage();
 
 async function loadConfig() {
   if (!configPromise) {
-    configPromise = fetch(`${API_BASE}/api/config`)
-      .then((r) => r.json())
-      .catch(() => ({}));
+    configPromise = (async () => {
+      try {
+        const cached = sessionStorage.getItem(CONFIG_CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed.supabaseUrl && parsed.supabaseAnonKey) {
+            fetch(`${API_BASE}/api/config`)
+              .then((r) => r.json())
+              .then((fresh) => {
+                if (fresh.supabaseUrl) {
+                  sessionStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify(fresh));
+                }
+              })
+              .catch(() => {});
+            return parsed;
+          }
+        }
+      } catch (_) {}
+
+      const fresh = await fetch(`${API_BASE}/api/config`)
+        .then((r) => r.json())
+        .catch(() => ({}));
+      if (fresh.supabaseUrl && fresh.supabaseAnonKey) {
+        try {
+          sessionStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify(fresh));
+        } catch (_) {}
+      }
+      return fresh;
+    })();
   }
   return configPromise;
 }
 
-async function ensureSupabase() {
-  if (supabaseClient) return supabaseClient;
-  const config = await loadConfig();
-  if (!config.supabaseUrl || !config.supabaseAnonKey) return null;
-
-  if (!document.querySelector('link[data-acg-supabase-preload]')) {
-    const preload = document.createElement("link");
-    preload.rel = "modulepreload";
-    preload.href = SUPABASE_CDN;
-    preload.setAttribute("data-acg-supabase-preload", "");
-    document.head.appendChild(preload);
-  }
-
-  const { createClient } = await import(SUPABASE_CDN);
-  supabaseClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
-    auth: {
-      storage: window.sessionStorage,
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: true
-    }
-  });
-  bootstrapAuthListener(supabaseClient);
-  return supabaseClient;
+async function importSupabase() {
+  try {
+    const mod = await import(SUPABASE_LOCAL);
+    if (mod?.createClient) return mod;
+  } catch (_) {}
+  return import(SUPABASE_CDN);
 }
 
-window.ACG_SUPABASE_READY = ensureSupabase();
+async function ensureSupabase() {
+  if (supabaseClient) return supabaseClient;
+  if (!supabaseInitPromise) {
+    supabaseInitPromise = (async () => {
+      const config = await loadConfig();
+      if (!config.supabaseUrl || !config.supabaseAnonKey) return null;
+
+      const { createClient } = await importSupabase();
+      supabaseClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+        auth: {
+          storage: window.sessionStorage,
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: true
+        }
+      });
+      bootstrapAuthListener(supabaseClient);
+      return supabaseClient;
+    })();
+  }
+  return supabaseInitPromise;
+}
+
+function ensureAuthInit() {
+  if (!authInitPromise) {
+    authInitPromise = (async () => {
+      const sb = await ensureSupabase();
+      if (!sb) {
+        authReady = true;
+        return null;
+      }
+      return refreshAuthState();
+    })();
+  }
+  return authInitPromise;
+}
+
+function scheduleAuthInit() {
+  const start = () => ensureAuthInit();
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(start, { timeout: 1800 });
+  } else {
+    setTimeout(start, 100);
+  }
+}
+
+window.ACG_SUPABASE_READY = ensureSupabase;
 
 async function getSession() {
   const sb = await ensureSupabase();
@@ -464,21 +533,24 @@ window.ACG_AUTH = {
   },
 
   waitReady() {
-    if (authReady) return Promise.resolve(authUser);
-    return authInitPromise.then(() => authUser);
+    return ensureAuthInit().then(() => authUser);
   },
 
   subscribe(fn) {
     authListeners.add(fn);
-    if (authReady) fn(authUser);
+    if (authReady) {
+      fn(authUser);
+    } else {
+      ensureAuthInit();
+    }
     return () => authListeners.delete(fn);
   },
 
   refresh: refreshAuthState
 };
 
-const authInitPromise = window.ACG_SUPABASE_READY.then((sb) => {
-  if (sb) return refreshAuthState();
-  authReady = true;
-  return null;
-});
+if (document.body?.dataset?.page === "login" || document.body?.dataset?.page === "account" || document.body?.dataset?.page === "admin") {
+  ensureAuthInit();
+} else {
+  scheduleAuthInit();
+}

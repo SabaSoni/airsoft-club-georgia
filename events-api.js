@@ -45,6 +45,10 @@ function fetchEventsFresh() {
 }
 
 window.ACG_EVENTS = {
+  getCached() {
+    return readEventsCache();
+  },
+
   async getAll(options = {}) {
     const cached = !options.force ? readEventsCache() : null;
     if (cached) {

@@ -153,10 +153,18 @@ async function initShop() {
   const grid = document.getElementById("productsGrid");
   if (!grid) return;
 
-  await loadProducts();
-
   const isTeaser = grid.dataset.teaser === "true";
   const filter = grid.dataset.filter || "all";
+
+  if (isTeaser && window.ACG_PRODUCTS_FALLBACK?.length) {
+    productsCache = window.ACG_PRODUCTS_FALLBACK;
+    renderProducts(filter, 4);
+    setupModal();
+  } else if (!isTeaser) {
+    grid.innerHTML = `<p class="shop-loading">იტვირთება...</p>`;
+  }
+
+  await loadProducts();
 
   if (isTeaser) {
     renderProducts(filter, 4);
